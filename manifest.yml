@@ -1,0 +1,26 @@
+modules:
+  jira:sprintAction:
+    - key: issue-sorter
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: issue-sorter
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: dist/frontend/index.js
+permissions:
+  scopes:
+    - read:sprint:jira-software
+    - read:issue-details:jira
+    - read:jql:jira
+    - read:user:jira
+    - write:issue:jira-software
+
+app:
+  runtime:
+    name: nodejs20.x
+  id: ari:cloud:ecosystem::app/40963be1-0792-4cf0-8142-8ba1562749a4
