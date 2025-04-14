@@ -8,19 +8,19 @@ export interface Issue {
   assignee?: Assignee;
 }
 
-interface Epic {
+export interface Epic {
   id: number;
   name: string;
   summary?: string;
 }
 
-interface Assignee {
+export interface Assignee {
   accountId: string;
   displayName: string;
   avatarUrl?: string;
 }
 
-interface Status {
+export interface Status {
   id: string;
   name: string;
   statusCategory?: {

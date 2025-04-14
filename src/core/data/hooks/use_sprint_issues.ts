@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Issue, Option, Response } from '../../domain/models/models';
+import { Issue, Option } from '../../domain/models/models';
 import { useProductContext } from '@forge/react';
 import { invoke } from '@forge/bridge';
 
-export interface SprintActionExtensionData {
+interface SprintActionExtensionData {
   type?: string;
   project?: {
     id?: string;
@@ -20,6 +20,12 @@ export interface SprintActionExtensionData {
   };
 }
 
+export interface SortResult {
+  success: boolean;
+  message: string;
+  error?: string;
+}
+
 export const useSprintIssues = () => {
   const [sortField, setSortField] = useState<Option>({
     value: 'summary',
@@ -29,7 +35,7 @@ export const useSprintIssues = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortingInProgress, setSortingInProgress] = useState(false);
-  const [sortResult, setSortResult] = useState<Response | null>(null);
+  const [sortResult, setSortResult] = useState<SortResult | null>(null);
 
   const context = useProductContext();
   const sprintActionExtension = context?.extension as SprintActionExtensionData;
@@ -92,7 +98,7 @@ export const useSprintIssues = () => {
       setSortingInProgress(true);
       setSortResult(null);
 
-      const result = await invoke<Response>('reorderIssues', {
+      const result = await invoke<SortResult>('reorderIssues', {
         orderedIssues: issues
       });
 

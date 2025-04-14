@@ -14,8 +14,12 @@ import {
   Text,
   User
 } from '@forge/react';
-import { Issue, Option, Response } from '../../../core/domain/models/models';
-import { useSortFields, useSprintIssues } from '../../../core/data/hooks/hooks';
+import { Issue, Option } from '../../../core/domain/models/models';
+import {
+  useSortFields,
+  useSprintIssues,
+  SortResult
+} from '../../../core/data/hooks/hooks';
 
 export const MainPage = () => {
   const {
@@ -179,7 +183,7 @@ export const LoadingSpinner = () => {
 interface SortActionButtonProps {
   onApplySort: () => Promise<void>;
   isLoading: boolean;
-  sortResult: Response | null;
+  sortResult: SortResult | null;
   disabled?: boolean;
 }
 

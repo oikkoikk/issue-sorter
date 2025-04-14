@@ -1,5 +1,15 @@
-import api, { route } from '@forge/api';
+import api, { APIResponse, route } from '@forge/api';
 import { Issue } from '../../domain/models/models';
+
+interface PartialSuccessResponse {
+  entries: IssueEntry[];
+}
+
+interface IssueEntry {
+  issueId: number;
+  issueKey: string;
+  status: number;
+}
 
 export class IssueRepository {
   private readonly MAX_BATCH_SIZE = 50;
@@ -48,10 +58,10 @@ export class IssueRepository {
       }
 
       if (response.status === 207) {
-        const body = await response.json();
-        const failedIssues = body.responses
-          .filter((res: any) => res.status !== 204)
-          .map((res: any) => res.issueKey);
+        const body = (await response.json()) as PartialSuccessResponse;
+        const failedIssues = body.entries
+          .filter((res: IssueEntry) => res.status !== 204)
+          .map((res: IssueEntry) => res.issueKey);
         console.warn(
           `Partial failure, retrying ${failedIssues.length} issues...`
         );

@@ -1,9 +1,32 @@
 import api, { route } from '@forge/api';
-import { Issue } from '../../domain/models/models';
+import { Assignee, Epic, Status, Issue } from '../../domain/models/models';
 
-export interface SprintIssuesResponse {
+interface SprintIssues {
   issues: Issue[];
   total: number;
+}
+
+interface SprintIssuesAPIResponse {
+  expand: string;
+  startAt: number;
+  maxResults: number;
+  total: number;
+  issues: IssueResponse[];
+}
+
+interface IssueResponse {
+  expand: string;
+  id: string;
+  self: string;
+  key: string;
+  fields: IssueFields;
+}
+
+interface IssueFields {
+  summary: string;
+  epic: Epic | null;
+  assignee: Assignee | null;
+  status: Status;
 }
 
 export class SprintRepository {
@@ -47,6 +70,7 @@ export class SprintRepository {
         }
 
         const data = await response.json();
+        console.log(JSON.stringify(data, null, 2));
         const parsedIssues = this.parseIssuesResponse(data);
 
         allIssues = [...allIssues, ...parsedIssues.issues];
@@ -70,9 +94,10 @@ export class SprintRepository {
    * @param rawResponse API 원본 응답
    * @returns 파싱된 이슈 목록
    */
-  private parseIssuesResponse(rawResponse: any): SprintIssuesResponse {
-    const issues = rawResponse.issues.map((rawIssue: any) => {
-      // 이슈 데이터 추출 및 변환
+  private parseIssuesResponse(
+    rawResponse: SprintIssuesAPIResponse
+  ): SprintIssues {
+    const issues = rawResponse.issues.map((rawIssue: IssueResponse) => {
       const issue: Issue = {
         id: rawIssue.id,
         key: rawIssue.key,
@@ -90,8 +115,7 @@ export class SprintRepository {
         assignee: rawIssue.fields.assignee
           ? {
               accountId: rawIssue.fields.assignee.accountId,
-              displayName: rawIssue.fields.assignee.displayName,
-              avatarUrl: rawIssue.fields.assignee.avatarUrls?.['24x24']
+              displayName: rawIssue.fields.assignee.displayName
             }
           : undefined,
         epic: rawIssue.fields.epic
@@ -108,7 +132,7 @@ export class SprintRepository {
 
     return {
       issues,
-      total: rawResponse.total || issues.length
+      total: rawResponse.total
     };
   }
 }
