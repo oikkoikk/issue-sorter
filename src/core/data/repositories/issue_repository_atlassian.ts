@@ -11,7 +11,7 @@ interface IssueEntry {
   status: number;
 }
 
-export class IssueRepository {
+export class IssueRepositoryAtlassian {
   private readonly MAX_BATCH_SIZE = 50;
   private readonly MAX_RETRIES = 3;
   private readonly RETRY_DELAY_MS = 200;

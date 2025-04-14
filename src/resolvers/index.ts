@@ -1,5 +1,8 @@
 import Resolver from '@forge/resolver';
-import { IssueRepository, SprintRepository } from '../core/data/repositories/repositories';
+import {
+  IssueRepositoryAtlassian,
+  SprintRepositoryAtlassian
+} from '../core/data/repositories/repositories';
 
 const resolver = new Resolver();
 
@@ -15,7 +18,7 @@ resolver.define('getSprintIssues', async (req) => {
   }
 
   try {
-    const sprintRepo = new SprintRepository();
+    const sprintRepo = new SprintRepositoryAtlassian();
     const issues = await sprintRepo.getIssuesWithSprintId(sprintId);
     return issues;
   } catch (error) {
@@ -76,7 +79,7 @@ resolver.define('reorderIssues', async (req) => {
   }
 
   try {
-    const issueRepo = new IssueRepository();
+    const issueRepo = new IssueRepositoryAtlassian();
     await issueRepo.reorderIssues(orderedIssues);
 
     return {

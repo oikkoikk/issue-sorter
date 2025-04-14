@@ -29,7 +29,7 @@ interface IssueFields {
   status: Status;
 }
 
-export class SprintRepository {
+export class SprintRepositoryAtlassian {
   /**
    * 스프린트 ID로 해당 스프린트에 있는 이슈들을 가져옴
    * @param sprintId 스프린트 ID
