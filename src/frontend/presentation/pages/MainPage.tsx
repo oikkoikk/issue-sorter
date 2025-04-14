@@ -126,7 +126,6 @@ export const IssueTable = ({ issues }: IssueTableProps) => {
         content: issue.assignee ? (
           <Inline space='space.100'>
             <User accountId={issue.assignee.accountId} />
-            <Text>{issue.assignee.displayName}</Text>
           </Inline>
         ) : (
           <Text>-</Text>

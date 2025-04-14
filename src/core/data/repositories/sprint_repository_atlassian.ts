@@ -70,7 +70,6 @@ export class SprintRepository {
         }
 
         const data = await response.json();
-        console.log(JSON.stringify(data, null, 2));
         const parsedIssues = this.parseIssuesResponse(data);
 
         allIssues = [...allIssues, ...parsedIssues.issues];
